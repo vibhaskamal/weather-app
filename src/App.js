@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
+  let [userInput, setUserInput] = useState('');
+
+  function handleInputChange(e) {
+    setUserInput(e.target.value);
+  }
+
+  function handleSubmit() {
+    console.log('userInput: ', userInput);
+  }
+
+  function handleClear() {
+    setUserInput('');
+  }
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      Enter name of city:<br />
+      <input type="text" value={userInput} onChange={handleInputChange} />
+      <br />
+      <button onClick={handleSubmit}>
+        Submit
+      </button>
+      <button onClick={handleClear}>
+        Clear
+      </button>
     </div>
   );
 }
