@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { api_key } from './data.js';
 import './App.css';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 
 function App() {
   let [userInput, setUserInput] = useState('');
@@ -20,32 +22,18 @@ function App() {
     setUserInput('');
   }
 
-  // async function getLocationWeather() {
-  //   console.log('userInput: ', userInput);
-  //   try {
-  //     const result = await fetch(`api.openweathermap.org/data/2.5/forecast/daily?q=melb&units=metric&cnt=7&appid=${api_key}`);
+  function handleSearch(cityValue) {
+    getLocationWeather(cityValue)
+  }
 
-  //     if (result.status === 200) {
-  //       let result_data = await result.json();
-  //       console.log('result: ', result_data);
-  //       return { success: true, data: await result.json() };
-  //     }
-
-  //     return { success: false, error: result.statusText };
-  //   } catch (ex) {
-  //     return { success: false, error: ex.message };
-  //   }
-  // }
-
-  async function getLocationWeather() {
+  async function getLocationWeather(city) {
     try {
-      const result = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=melbourne,AU&limit=5&appid=${api_key}`);
+      const result = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},AU&limit=5&appid=${api_key}`);
 
       if (result.status === 200) {
         let result_data = await result.json();
         const lat = result_data[0].lat;
         const lon = result_data[0].lon;
-        // console.log('result: ', result_data);
         console.log('lat lon: ', result_data[0].lat, result_data[0].lon);
         getWeatherData(lat, lon);
         return { success: true, data: await result.json() };
@@ -57,7 +45,7 @@ function App() {
     }
   }
 
-  async function getWeatherData(lat=33.44, lon=-94.04) {
+  async function getWeatherData(lat, lon) {
     try {
       const result = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,hourly,alerts&units=metric&appid=${api_key}`);
 
@@ -73,38 +61,18 @@ function App() {
     }
   }
 
-  useEffect(() => {
-    const loadingIndicatorTimeout = setTimeout(() => setIsLoading(true), 500);
-    const getWeather = async () => {
-      const result = await getLocationWeather();
-      // if (result.success) {
-      //   setWeatherData(result)
-      // }
-      setWeatherData(result.success ? result.data : {});
-      setApiError(result.success ? "" : result.error);
-      console.log('weather data: ', weatherData);
-      console.log('weather error: ', apiError);
-    };
-  
-    getWeather();
-  }, []);
-
   return (
     <div className="App">
       Enter name of city:<br />
-      <input type="text" value={userInput} onChange={handleInputChange} />
       <br />
-      <button onClick={handleSubmit}>
-        Submit
-      </button>
-      <button onClick={handleClear}>
-        Clear
-      </button>
-      <button onClick={getLocationWeather}>
-        Search
-      </button>
+      <TextField id="standard-basic" value={userInput} onChange={handleInputChange} label="Standard" variant="standard" />
+      <br /> <br />
+      <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+      &nbsp;&nbsp;&nbsp;
+      <Button variant="contained" onClick={handleClear}>Clear</Button>
+      &nbsp;&nbsp;&nbsp;
+      <Button variant="contained" onClick={() => handleSearch(userInput)}>Search</Button>
       <br /><br />
-      <textarea value = {weatherData} />
     </div>
   );
 }
