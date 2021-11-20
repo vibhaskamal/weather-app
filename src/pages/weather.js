@@ -3,7 +3,7 @@ import { api_key } from '../data.js';
 import '../App.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-// import { BrowserRouter } from "react-router-dom";
+import BasicCard from '../components/basicCard.js';
 
 function Weather() {
     let [userInput, setUserInput] = useState('');
@@ -70,7 +70,7 @@ function Weather() {
             &nbsp;&nbsp;&nbsp;
             <Button variant="contained" onClick={() => getLocationWeather(userInput)}>Search</Button>
             <br /><br />
-
+            <BasicCard />
         </div>
     );
 }

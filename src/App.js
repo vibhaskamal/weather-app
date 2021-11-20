@@ -26,8 +26,6 @@ function App() {
           <Route path="/" element={<Weather />} />
           <Route path="/favourites" element={<Favourites />} />
         </Routes>
-        {/* <Weather />
-        <Favourites /> */}
       </div>
     </BrowserRouter>
   );
