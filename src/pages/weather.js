@@ -4,6 +4,7 @@ import '../App.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import BasicCard from '../components/basicCard.js';
+import TempCard from '../components/tempCard.js';
 
 function Weather() {
     let [userInput, setUserInput] = useState('');
@@ -70,7 +71,8 @@ function Weather() {
             &nbsp;&nbsp;&nbsp;
             <Button variant="contained" onClick={() => getLocationWeather(userInput)}>Search</Button>
             <br /><br />
-            <BasicCard />
+            {/* <BasicCard /> */}
+            <TempCard />
         </div>
     );
 }
