@@ -59,6 +59,13 @@ function Weather() {
         }
     }
 
+    let points = {
+        temperature: 20,
+        clouds: 20,
+        humidity: 20,
+        wind: 20
+    };
+
     return (
         <div className="App">
             Enter name of city:<br />
@@ -72,7 +79,7 @@ function Weather() {
             <Button variant="contained" onClick={() => getLocationWeather(userInput)}>Search</Button>
             <br /><br />
             {/* <BasicCard /> */}
-            <TempCard />
+            <TempCard properties={points}/>
         </div>
     );
 }

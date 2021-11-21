@@ -16,13 +16,19 @@ const bull = (
     </Box>
 );
 
-export default function TempCard(temp = 10, clouds = 10, humidity = 10, wind = 10) {
+// export default function TempCard(degree = 10, clouds = 10, humidity = 10, wind = 10) {
+export default function TempCard(props) {
     // const temperature = (
     //     <div>
     //         {temp}
     //     </div>
     // );
-    var x = clouds.toString();
+
+    // var x = props.clouds.toString();
+    console.log('props: ', props.properties.clouds);
+    console.log('props.clouds: ', props['clouds']);
+    console.log('props.clouds: ', props[0]);
+    // console.log('humidity: ', props.humidity);
 
     return (
         <div className="temp-card" style={{ textAlign: 'left' }}>
@@ -35,14 +41,15 @@ export default function TempCard(temp = 10, clouds = 10, humidity = 10, wind = 1
                         21 November 2021
                     </Typography>
                     <Typography variant="body2">
-                        {/* {'Temperature: ' + temperature.toString()} */}
-                        <br />
+                        {'Temperature: ' + props.properties.temperature.toString()}
+                        {`Temperature: ${props.properties.temperature}`}
+                        {/* <br />
                         {'Clouds: ' + x}
                         <br />
-                        {'Humidity: ' + humidity.toString()}
+                        {'Humidity: ' + props.humidity.toString()}
                         <br />
-                        {'Wind speed: ' + wind.toString()}
-                        {'Temperature: ' + temp.toString()}
+                        {'Wind speed: ' + props.wind.toString()}
+                        {'Temperature: ' + props.degree.toString()} */}
                         
                     </Typography>
                 </CardContent>
