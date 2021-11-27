@@ -3,8 +3,8 @@ import { api_key } from '../data.js';
 import '../App.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import BasicCard from '../components/basicCard.js';
 import TempCard from '../components/tempCard.js';
+import timeConverter from '../utils/timeConverter.js';
 
 function Weather() {
     let [userInput, setUserInput] = useState('');
@@ -50,6 +50,8 @@ function Weather() {
             if (result.status === 200) {
                 let result_data = await result.json();
                 console.log('result: ', result_data);
+                console.log('date: ', result_data.daily[0].dt);
+                console.log('date time: ', timeConverter(result_data.daily[0].dt).date);
                 return { success: true, data: await result.json() };
             }
 
@@ -59,7 +61,7 @@ function Weather() {
         }
     }
 
-    let points = {
+    let cardProps = {
         temperature: 20,
         clouds: 20,
         humidity: 20,
@@ -79,7 +81,7 @@ function Weather() {
             <Button variant="contained" onClick={() => getLocationWeather(userInput)}>Search</Button>
             <br /><br />
             {/* <BasicCard /> */}
-            <TempCard properties={points}/>
+            <TempCard properties={cardProps}/>
         </div>
     );
 }

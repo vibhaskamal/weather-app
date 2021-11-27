@@ -25,9 +25,9 @@ export default function TempCard(props) {
     // );
 
     // var x = props.clouds.toString();
-    console.log('props: ', props.properties.clouds);
-    console.log('props.clouds: ', props['clouds']);
-    console.log('props.clouds: ', props[0]);
+    // console.log('props: ', props.properties.clouds);
+    // console.log('props.clouds: ', props['clouds']);
+    // console.log('props.clouds: ', props[0]);
     // console.log('humidity: ', props.humidity);
 
     return (
