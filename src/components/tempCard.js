@@ -50,9 +50,6 @@ export default function TempCard(props) {
                         {`Wind speed: ${props.properties.wind}`}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small">Learn More</Button>
-                </CardActions>
             </Card>
         </div>
     );
