@@ -41,16 +41,13 @@ export default function TempCard(props) {
                         21 November 2021
                     </Typography>
                     <Typography variant="body2">
-                        {'Temperature: ' + props.properties.temperature.toString()}
                         {`Temperature: ${props.properties.temperature}`}
-                        {/* <br />
-                        {'Clouds: ' + x}
                         <br />
-                        {'Humidity: ' + props.humidity.toString()}
+                        {`Clouds: ${props.properties.clouds}`}
                         <br />
-                        {'Wind speed: ' + props.wind.toString()}
-                        {'Temperature: ' + props.degree.toString()} */}
-                        
+                        {`Humidity: ${props.properties.humidity}`}
+                        <br />
+                        {`Wind speed: ${props.properties.wind}`}
                     </Typography>
                 </CardContent>
                 <CardActions>
