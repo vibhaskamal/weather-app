@@ -35,11 +35,9 @@ export default function TempCard(props) {
             <Card sx={{ minWidth: 275 }}>
                 <CardContent>
                     <Typography variant="h5" component="div">
-                        Perth, AU
+                    21 November 2021
                     </Typography>
-                    <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                        21 November 2021
-                    </Typography>
+                    <br />
                     <Typography variant="body2">
                         {`Temperature: ${props.properties.temperature}`}
                         <br />
