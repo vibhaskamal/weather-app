@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import TempCard from '../components/tempCard.js';
 import timeConverter from '../utils/timeConverter.js';
 import Grid from '@mui/material/Grid';
+import Chip from '@mui/material/Chip';
+import Typography from '@mui/material/Typography';
 
 function Weather() {
     let [userInput, setUserInput] = useState('');
@@ -105,12 +107,21 @@ function Weather() {
             &nbsp;&nbsp;&nbsp;
             <Button variant="contained" onClick={() => getLocationWeather(userInput)}>Search</Button>
             <br /><br />
+            {isDataReady &&
+                <div>
+                    <Chip label="Chip Outlined" variant="outlined" style={{ height: '50px', width: '200px' }} />
+                </div>
+            }
+            <br /><br />
             <Grid container spacing={3} >
-                {isDataReady && weatherData.map((data, index) =>
-                    <Grid item xs={3}>
-                        <TempCard properties={data} />
-                    </Grid>
-                )}
+
+                {isDataReady &&
+                    weatherData.map((data, index) =>
+                        <Grid item xs={3}>
+                            <TempCard properties={data} />
+                        </Grid>
+                    )
+                }
             </Grid>
         </div>
     );
