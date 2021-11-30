@@ -16,15 +16,15 @@ export default function TempCard(props) {
                         {props.properties.day}
                     </Typography>
                     <Typography variant="body2">
-                        {`Maximum: ${props.properties.max_temp}`}
+                        {`Maximum: ${props.properties.max_temp}\u00b0C`}
                         <br />
-                        {`Minimum: ${props.properties.min_temp}`}
+                        {`Minimum: ${props.properties.min_temp}\u00b0C`}
                         <br />
-                        {`Clouds: ${props.properties.clouds}`}
+                        {`Clouds: ${props.properties.clouds} %`}
                         <br />
-                        {`Humidity: ${props.properties.humidity}`}
+                        {`Humidity: ${props.properties.humidity} %`}
                         <br />
-                        {`Wind speed: ${props.properties.wind}`}
+                        {`Wind speed: ${props.properties.wind} m/s`}
                     </Typography>
                 </CardContent>
             </Card>
