@@ -10,12 +10,13 @@ import StarIcon from '@mui/icons-material/Star';
 import { api_key } from '../data.js';
 import '../App.css';
 
+// const LOCAL_STORAGE_KEY = "locations_";
 function Weather() {
     let [userInput, setUserInput] = useState('');
     let [isDataReady, setDataReady] = useState(false);
     let [weatherData, setWeatherData] = useState(false);
     let [cityName, setCityName] = useState('');
-    let [isFavorite, setFavorite] = useState(false);
+    let [isFavorite, setIsFavorite] = useState(false);
 
     function handleInputChange(e) {
         setUserInput(e.target.value);
@@ -27,6 +28,7 @@ function Weather() {
 
     async function getLocationWeather(city) {
         try {
+            setDataReady(false);
             const result = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},AU&limit=5&appid=${api_key}`);
             if (result.status === 200) {
                 let result_data = await result.json();
@@ -36,7 +38,12 @@ function Weather() {
                 console.log(weather_data);
                 const mapped_data = mapWeatherData(weather_data);
                 setWeatherData(mapped_data);
+                // console.log('cityName: ', cityName);
+                // console.log('cityName: ', checkIfFavorite(cityName));
+                // checkIfFavorite(cityName) ? setIsFavorite(true) : setIsFavorite(false);
+                // console.log('after cityName: ', checkIfFavorite(cityName));
                 setDataReady(true);
+                
                 return { success: true, data: weather_data };
             }
             return { success: false, error: result.statusText };
@@ -60,8 +67,9 @@ function Weather() {
 
     function mapWeatherData(data) {
         let result = [];
-        let city_name = data.timezone.split('/').pop() + ', AU';
+        let city_name = data.timezone.split('/').pop();
         setCityName(city_name);
+        console.log('city name after setCityName: ', city_name);
         data.daily.forEach((obj) => {
             result.push({
                 date: timeConverter(obj.dt).date,
@@ -73,53 +81,68 @@ function Weather() {
                 wind: obj.wind_speed
             })
         });
+        checkIfFavorite(city_name) ? setIsFavorite(true) : setIsFavorite(false);
         return result;
     }
 
     function handleFavClick() {
-        setFavorite(!isFavorite);
-        // alert("Hello! I am an alert box!!");
+        setIsFavorite(!isFavorite);
+        // if(isFavorite) {
+        //     localStorage.setItem(cityName, cityName);
+        // }
     }
 
-    // function favIcon(boolean) {
-    //     if (boolean) {
-    //         return (
-    //             <StarIcon
-    //                 style={{ fontSize: "30px", cursor: 'pointer' }}
-    //                 onClick={handleFavClick}
-    //                 onmouseover=""
-    //             />
-    //         )
-    //     }
-    //     else {
-    //         return (
-    //             <StarOutlineIcon
-    //                 style={{ fontSize: "30px", cursor: 'pointer' }}
-    //                 onClick={handleFavClick}
-    //                 onmouseover=""
-    //             />
-    //         )
-    //     }
-    // }
+    function checkIfFavorite(cityName) {
+        // let city_name = data.timezone.split('/').pop();
+        console.log('city searched by user: ', cityName);
+        console.log('localStorage.getItem(name): ', localStorage.getItem(cityName));
+        if (localStorage.getItem(cityName)) {
+            return true;
+        }
+        return false;
+    }
+
+    function addToFavorites() {
+        localStorage.setItem(cityName, cityName);
+        setIsFavorite(true);
+    }
+
+    function removeFromFavorites() {
+        // if (localStorage.getItem(cityName)) {
+        localStorage.removeItem(cityName);
+        setIsFavorite(false);
+        // }
+    }
 
     function StarIconComponent() {
+        // localStorage.setItem(cityName, cityName);
         return (
             <StarIcon
                 style={{ fontSize: "30px", cursor: 'pointer' }}
-                onClick={handleFavClick}
-                onmouseover=""
+                onClick={removeFromFavorites}
             />
         );
     }
 
     function StarOutlineIconComponent() {
+        // if (localStorage.getItem(cityName)) {
+        //     localStorage.removeItem(cityName);
+        // }
         return (
             <StarOutlineIcon
                 style={{ fontSize: "30px", cursor: 'pointer' }}
-                onClick={handleFavClick}
-                onmouseover=""
+                onClick={addToFavorites}
             />
         );
+    }
+
+    function CheckFav() {
+        console.log('cityName: ', cityName);
+        console.log('isFav: ', isFavorite);
+        if (localStorage.getItem(cityName)) {
+            return true;
+        }
+        return false;
     }
 
     return (
