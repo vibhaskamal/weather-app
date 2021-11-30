@@ -5,6 +5,8 @@ import TempCard from '../components/tempCard.js';
 import timeConverter from '../utils/timeConverter.js';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import StarIcon from '@mui/icons-material/Star';
 import { api_key } from '../data.js';
 import '../App.css';
 
@@ -13,6 +15,7 @@ function Weather() {
     let [isDataReady, setDataReady] = useState(false);
     let [weatherData, setWeatherData] = useState(false);
     let [cityName, setCityName] = useState('');
+    let [isFavorite, setFavorite] = useState(false);
 
     function handleInputChange(e) {
         setUserInput(e.target.value);
@@ -73,6 +76,52 @@ function Weather() {
         return result;
     }
 
+    function handleFavClick() {
+        setFavorite(!isFavorite);
+        // alert("Hello! I am an alert box!!");
+    }
+
+    // function favIcon(boolean) {
+    //     if (boolean) {
+    //         return (
+    //             <StarIcon
+    //                 style={{ fontSize: "30px", cursor: 'pointer' }}
+    //                 onClick={handleFavClick}
+    //                 onmouseover=""
+    //             />
+    //         )
+    //     }
+    //     else {
+    //         return (
+    //             <StarOutlineIcon
+    //                 style={{ fontSize: "30px", cursor: 'pointer' }}
+    //                 onClick={handleFavClick}
+    //                 onmouseover=""
+    //             />
+    //         )
+    //     }
+    // }
+
+    function StarIconComponent() {
+        return (
+            <StarIcon
+                style={{ fontSize: "30px", cursor: 'pointer' }}
+                onClick={handleFavClick}
+                onmouseover=""
+            />
+        );
+    }
+
+    function StarOutlineIconComponent() {
+        return (
+            <StarOutlineIcon
+                style={{ fontSize: "30px", cursor: 'pointer' }}
+                onClick={handleFavClick}
+                onmouseover=""
+            />
+        );
+    }
+
     return (
         <div className="App">
             Enter name of city:<br />
@@ -86,6 +135,7 @@ function Weather() {
             {isDataReady &&
                 <div>
                     <Chip label={cityName} variant="outlined" style={{ height: '50px', width: 'fit-content', 'font-size': '18px', 'mid-width': '200px' }} />
+                    {isFavorite ? <StarIconComponent /> : <StarOutlineIconComponent />}
                 </div>
             }
             <br /><br />
