@@ -5,11 +5,13 @@ import TempCard from '../components/tempCard.js';
 import timeConverter from '../utils/timeConverter.js';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarIcon from '@mui/icons-material/Star';
 import { api_key } from '../data.js';
 import '../App.css';
 
+const local_storage_key = "locations";
 function Weather() {
     let [userInput, setUserInput] = useState('');
     let [isDataReady, setDataReady] = useState(false);
@@ -37,7 +39,7 @@ function Weather() {
                 const mapped_data = mapWeatherData(weather_data);
                 setWeatherData(mapped_data);
                 setDataReady(true);
-                
+
                 return { success: true, data: weather_data };
             }
             return { success: false, error: result.statusText };
@@ -78,10 +80,14 @@ function Weather() {
         return result;
     }
 
-    function handleFavClick() {
-    }
 
     function checkIfFavorite(cityName) {
+        // console.log('localStorage.getItem(local_storage_key): ', localStorage.getItem(local_storage_key));
+        // if (localStorage.getItem(local_storage_key)) {
+        //     console.log('localStorage.getItem(local_storage_key).length(): ', localStorage.getItem(local_storage_key).length);
+        // }
+
+        // // if (localStorage.getItem(local_storage_key).length() )
         if (localStorage.getItem(cityName)) {
             return true;
         }
@@ -89,6 +95,17 @@ function Weather() {
     }
 
     function addToFavorites() {
+        // let local_storage_data;
+        // if (!localStorage.getItem(local_storage_key)) {
+        //     localStorage.setItem(local_storage_key, [cityName]);
+        // }
+        // else {
+        //     local_storage_data = localStorage.getItem(local_storage_key);
+        //     console.log('local_storage_data: ', local_storage_data);
+        //     // local_storage_data.push(cityName);
+        //     localStorage.setItem(local_storage_key, [local_storage_data, cityName]);
+        // }
+
         localStorage.setItem(cityName, cityName);
         setIsFavorite(true);
     }
@@ -100,19 +117,23 @@ function Weather() {
 
     function StarIconComponent() {
         return (
-            <StarIcon
-                style={{ fontSize: "30px", cursor: 'pointer' }}
-                onClick={removeFromFavorites}
-            />
+            <Tooltip title="Remove from favorites" placement="right">
+                <StarIcon
+                    style={{ fontSize: "30px", cursor: 'pointer' }}
+                    onClick={removeFromFavorites}
+                />
+            </Tooltip>
         );
     }
 
     function StarOutlineIconComponent() {
         return (
-            <StarOutlineIcon
-                style={{ fontSize: "30px", cursor: 'pointer' }}
-                onClick={addToFavorites}
-            />
+            <Tooltip title="Add to favorites" placement="right">
+                <StarOutlineIcon
+                    style={{ fontSize: "30px", cursor: 'pointer' }}
+                    onClick={addToFavorites}
+                />
+            </Tooltip>
         );
     }
 
@@ -136,7 +157,7 @@ function Weather() {
             <Grid container spacing={3} >
                 {isDataReady &&
                     weatherData.map((data, index) =>
-                        <Grid item xs={3}>
+                        <Grid item xs={3} key={`grid-key-${index}`}>
                             <TempCard properties={data} key={index} />
                         </Grid>
                     )
