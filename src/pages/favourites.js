@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Chip from '@mui/material/Chip';
 import '../App.css';
 
 const CAPITAL_CITIES = ['Canberra', 'Sydney', 'Darwin', 'Brisbane', 'Adelaide', 'Hobart', 'Melbourne', 'Perth'];
@@ -14,7 +15,7 @@ function Favourites() {
             }
         })
 
-        cities ? setCities(cities) : setCities(null);
+        cities ? setCities(cities.sort()) : setCities(null);
         return;
     }
 
@@ -26,13 +27,21 @@ function Favourites() {
         <div className="App">
             Favourites
             <br />
-            {isCities &&
-                isCities.map((city, index) =>
-                    // <li>
-                        <ul key={`favorites_${index}`}>{city}</ul>
-                    // </li>
-                )
-            }
+            <div>
+                {isCities &&
+                    isCities.map((city, index) =>
+                        <>
+                            <Chip
+                                label={city}
+                                key={`favorites_${index}`}
+                                variant="outlined"
+                                style={{ height: '50px', width: 'fit-content', 'font-size': '18px', 'mid-width': '200px' }}
+                            />
+                            <br /><br />
+                        </>
+                    )
+                }
+            </div>
         </div>
     );
 }

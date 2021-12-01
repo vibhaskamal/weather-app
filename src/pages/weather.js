@@ -11,7 +11,6 @@ import StarIcon from '@mui/icons-material/Star';
 import { api_key } from '../data.js';
 import '../App.css';
 
-const local_storage_key = "locations";
 function Weather() {
     let [userInput, setUserInput] = useState('');
     let [isDataReady, setDataReady] = useState(false);
@@ -82,12 +81,6 @@ function Weather() {
 
 
     function checkIfFavorite(cityName) {
-        // console.log('localStorage.getItem(local_storage_key): ', localStorage.getItem(local_storage_key));
-        // if (localStorage.getItem(local_storage_key)) {
-        //     console.log('localStorage.getItem(local_storage_key).length(): ', localStorage.getItem(local_storage_key).length);
-        // }
-
-        // // if (localStorage.getItem(local_storage_key).length() )
         if (localStorage.getItem(cityName)) {
             return true;
         }
@@ -95,17 +88,6 @@ function Weather() {
     }
 
     function addToFavorites() {
-        // let local_storage_data;
-        // if (!localStorage.getItem(local_storage_key)) {
-        //     localStorage.setItem(local_storage_key, [cityName]);
-        // }
-        // else {
-        //     local_storage_data = localStorage.getItem(local_storage_key);
-        //     console.log('local_storage_data: ', local_storage_data);
-        //     // local_storage_data.push(cityName);
-        //     localStorage.setItem(local_storage_key, [local_storage_data, cityName]);
-        // }
-
         localStorage.setItem(cityName, cityName);
         setIsFavorite(true);
     }
