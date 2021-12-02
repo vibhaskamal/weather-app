@@ -5,9 +5,8 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Weather from './pages/weather.js';
 import Favourites from './pages/favourites';
+import Instructions from './pages/instructions.js';
 import './App.css';
-
-const CAPITAL_CITIES = ['Canberra', 'Sydney', 'Darwin', 'Brisbane', 'Adelaide', 'Hobart', 'Melbourne', 'Perth'];
 
 function App() {
   return (
@@ -22,12 +21,16 @@ function App() {
             <Typography variant="h6" color="inherit" component="div">
               <Link to="/favourites" style={{ color: 'white', 'textDecoration': 'none' }} underline="none">Favourites</Link >
             </Typography>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Typography variant="h6" color="inherit" component="div">
+              <Link to="/instructions" style={{ color: 'white', 'textDecoration': 'none' }} underline="none">Instructions</Link >
+            </Typography>
           </Toolbar>
         </AppBar>
         <Routes>
           <Route path="/" element={<Weather />} />
-          {/* <Route path="/:city_name" element={<Weather />} /> */}
           <Route path="/favourites" element={<Favourites />} />
+          <Route path="/instructions" element={<Instructions />} />
         </Routes>
       </div>
     </BrowserRouter>

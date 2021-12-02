@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
@@ -10,27 +10,15 @@ import StarIcon from '@mui/icons-material/Star';
 import TempCard from '../components/tempCard.js';
 import timeConverter from '../utils/timeConverter.js';
 import { api_key } from '../data.js';
-import { useParams, useNavigate } from "react-router-dom";
 import '../App.css';
+import { CAPITAL_CITIES } from './favourites.js';
 
-function Weather(prop_city_name="") {
+function Weather() {
     let [userInput, setUserInput] = useState('');
     let [isDataReady, setDataReady] = useState(false);
     let [weatherData, setWeatherData] = useState(false);
     let [cityName, setCityName] = useState('');
-    let [isFavorite, setIsFavorite] = useState(false);
-    let { city_name } = useParams();
-    const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     // if (prop_city_name !== "") {
-    //     //     getLocationWeather(prop_city_name);
-    //     // }
-    //     if (city_name) {
-    //         console.log('city_name', city_name);
-    //         getLocationWeather(city_name.replace(':', ''));
-    //     }
-    // }, [city_name, getLocationWeather]);
+    let [isFavourite, setIsFavourite] = useState(false);
 
     function handleInputChange(e) {
         setUserInput(e.target.value);
@@ -40,29 +28,30 @@ function Weather(prop_city_name="") {
         setUserInput('');
     }
 
-    function handleClearResult() {
-        setDataReady(false);
-        navigate(`/`);
-    }
-
     async function getLocationWeather(city) {
-        try {
-            setDataReady(false);
-            const result = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},AU&limit=5&appid=${api_key}`);
-            if (result.status === 200) {
-                let result_data = await result.json();
-                const lat = result_data[0].lat;
-                const lon = result_data[0].lon;
-                let weather_data = (await getWeatherData(lat, lon)).data;
-                const mapped_data = mapWeatherData(weather_data);
-                setWeatherData(mapped_data);
-                setDataReady(true);
+        if (CAPITAL_CITIES.indexOf(city.toLowerCase()) >= 0) {
+            try {
+                setDataReady(false);
+                const result = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${city},AU&limit=5&appid=${api_key}`);
+                if (result.status === 200) {
+                    let result_data = await result.json();
+                    const lat = result_data[0].lat;
+                    const lon = result_data[0].lon;
+                    let weather_data = (await getWeatherData(lat, lon)).data;
+                    const mapped_data = mapWeatherData(weather_data);
+                    setWeatherData(mapped_data);
+                    setDataReady(true);
 
-                return { success: true, data: weather_data };
+                    return { success: true, data: weather_data };
+                }
+                return { success: false, error: result.statusText };
+            } catch (ex) {
+                return { success: false, error: ex.message };
             }
-            return { success: false, error: result.statusText };
-        } catch (ex) {
-            return { success: false, error: ex.message };
+        }
+        else {
+            alert('Please enter a valid Australian capital city name (Please refer to the Instruction page for more information)');
+            setUserInput('');
         }
     }
 
@@ -94,34 +83,34 @@ function Weather(prop_city_name="") {
                 wind: Math.trunc(obj.wind_speed)
             })
         });
-        checkIfFavorite(city_name) ? setIsFavorite(true) : setIsFavorite(false);
+        checkIfFavourite(city_name) ? setIsFavourite(true) : setIsFavourite(false);
         return result;
     }
 
 
-    function checkIfFavorite(cityName) {
+    function checkIfFavourite(cityName) {
         if (localStorage.getItem(cityName)) {
             return true;
         }
         return false;
     }
 
-    function addToFavorites() {
+    function addToFavourites() {
         localStorage.setItem(cityName, cityName);
-        setIsFavorite(true);
+        setIsFavourite(true);
     }
 
-    function removeFromFavorites() {
+    function removeFromFavourites() {
         localStorage.removeItem(cityName);
-        setIsFavorite(false);
+        setIsFavourite(false);
     }
 
     function StarIconComponent() {
         return (
-            <Tooltip title="Remove from favorites" placement="right">
+            <Tooltip title="Remove from Favourites" placement="right">
                 <StarIcon
                     className="star-icon"
-                    onClick={removeFromFavorites}
+                    onClick={removeFromFavourites}
                 />
             </Tooltip>
         );
@@ -129,10 +118,10 @@ function Weather(prop_city_name="") {
 
     function StarOutlineIconComponent() {
         return (
-            <Tooltip title="Add to favorites" placement="right">
+            <Tooltip title="Add to Favourites" placement="right">
                 <StarOutlineIcon
                     className="star-icon"
-                    onClick={addToFavorites}
+                    onClick={addToFavourites}
                 />
             </Tooltip>
         );
@@ -140,7 +129,7 @@ function Weather(prop_city_name="") {
 
     return (
         <div className="App">
-            <Typography variant="h4" gutterBottom component="div"  style={{'margin-top': '20px'}}>
+            <Typography variant="h4" gutterBottom component="div" style={{ 'margin-top': '20px' }}>
                 Weather App
             </Typography>
             <br />
@@ -148,15 +137,12 @@ function Weather(prop_city_name="") {
             <br /> <br />
             <Button variant="contained" onClick={handleClear}>Clear</Button>
             &nbsp;&nbsp;&nbsp;
-            {/* <Button variant="contained" onClick={() => getLocationWeather(prop_city_name === '' ? prop_city_name : userInput)}>Search</Button> */}
             <Button variant="contained" onClick={() => getLocationWeather(userInput)}>Search</Button>
-            &nbsp;&nbsp;&nbsp;
-            <Button variant="contained" onClick={() => handleClearResult}>Clear Result</Button>
             <br /><br />
             {isDataReady &&
                 <div>
                     <Chip label={cityName} variant="outlined" style={{ height: '50px', width: 'fit-content', 'font-size': '18px', 'mid-width': '200px' }} />
-                    {isFavorite ? <StarIconComponent /> : <StarOutlineIconComponent />}
+                    {isFavourite ? <StarIconComponent /> : <StarOutlineIconComponent />}
                 </div>
             }
             <br /><br />
