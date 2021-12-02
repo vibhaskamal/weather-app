@@ -5,7 +5,7 @@ import { CAPITAL_CITIES } from './favourites.js';
 
 export default function Instructions() {
     return (
-        <Container style={{ 'marginTop': '40px' }}>
+        <Container className="App">
             <Typography variant="h4" gutterBottom component="div" style={{ 'margin-top': '20px' }}>
                 Instructions
             </Typography>
