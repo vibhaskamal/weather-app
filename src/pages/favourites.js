@@ -9,7 +9,7 @@ export const CAPITAL_CITIES = ['adelaide', 'brisbane', 'canberra', 'darwin', 'ho
 function Favourites() {
     let [isCities, setCities] = useState();
 
-    function getCitiesFromLocalStorage() {
+    useEffect(() => {
         let cities = [];
         CAPITAL_CITIES.forEach((city) => {
             let valid_city_name = capitalizeFirstLetter(city);
@@ -19,11 +19,6 @@ function Favourites() {
         });
 
         cities ? setCities(cities.sort()) : setCities(null);
-        return;
-    }
-
-    useEffect(() => {
-        getCitiesFromLocalStorage();
     }, []);
 
     return (
