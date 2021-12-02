@@ -1,22 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import TempCard from '../components/tempCard.js';
-import timeConverter from '../utils/timeConverter.js';
 import Grid from '@mui/material/Grid';
 import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import StarIcon from '@mui/icons-material/Star';
+import TempCard from '../components/tempCard.js';
+import timeConverter from '../utils/timeConverter.js';
 import { api_key } from '../data.js';
+import { useParams, useNavigate } from "react-router-dom";
 import '../App.css';
 
-function Weather() {
+function Weather(prop_city_name="") {
     let [userInput, setUserInput] = useState('');
     let [isDataReady, setDataReady] = useState(false);
     let [weatherData, setWeatherData] = useState(false);
     let [cityName, setCityName] = useState('');
     let [isFavorite, setIsFavorite] = useState(false);
+    let { city_name } = useParams();
+    const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     // if (prop_city_name !== "") {
+    //     //     getLocationWeather(prop_city_name);
+    //     // }
+    //     if (city_name) {
+    //         console.log('city_name', city_name);
+    //         getLocationWeather(city_name.replace(':', ''));
+    //     }
+    // }, [city_name, getLocationWeather]);
 
     function handleInputChange(e) {
         setUserInput(e.target.value);
@@ -24,6 +38,11 @@ function Weather() {
 
     function handleClear() {
         setUserInput('');
+    }
+
+    function handleClearResult() {
+        setDataReady(false);
+        navigate(`/`);
     }
 
     async function getLocationWeather(city) {
@@ -68,11 +87,11 @@ function Weather() {
             result.push({
                 date: timeConverter(obj.dt).date,
                 day: timeConverter(obj.dt).day,
-                max_temp: obj.temp.max,
-                min_temp: obj.temp.min,
+                max_temp: Math.trunc(obj.temp.max),
+                min_temp: Math.trunc(obj.temp.min),
                 clouds: obj.clouds,
                 humidity: obj.humidity,
-                wind: obj.wind_speed
+                wind: Math.trunc(obj.wind_speed)
             })
         });
         checkIfFavorite(city_name) ? setIsFavorite(true) : setIsFavorite(false);
@@ -101,7 +120,7 @@ function Weather() {
         return (
             <Tooltip title="Remove from favorites" placement="right">
                 <StarIcon
-                    style={{ fontSize: "30px", cursor: 'pointer' }}
+                    className="star-icon"
                     onClick={removeFromFavorites}
                 />
             </Tooltip>
@@ -112,7 +131,7 @@ function Weather() {
         return (
             <Tooltip title="Add to favorites" placement="right">
                 <StarOutlineIcon
-                    style={{ fontSize: "30px", cursor: 'pointer' }}
+                    className="star-icon"
                     onClick={addToFavorites}
                 />
             </Tooltip>
@@ -121,13 +140,18 @@ function Weather() {
 
     return (
         <div className="App">
-            Enter name of city:<br />
+            <Typography variant="h4" gutterBottom component="div"  style={{'margin-top': '20px'}}>
+                Weather App
+            </Typography>
             <br />
-            <TextField id="standard-basic" value={userInput} onChange={handleInputChange} label="Standard" variant="standard" />
+            <TextField id="standard-basic" value={userInput} onChange={handleInputChange} label="Enter a city name..." variant="standard" />
             <br /> <br />
             <Button variant="contained" onClick={handleClear}>Clear</Button>
             &nbsp;&nbsp;&nbsp;
+            {/* <Button variant="contained" onClick={() => getLocationWeather(prop_city_name === '' ? prop_city_name : userInput)}>Search</Button> */}
             <Button variant="contained" onClick={() => getLocationWeather(userInput)}>Search</Button>
+            &nbsp;&nbsp;&nbsp;
+            <Button variant="contained" onClick={() => handleClearResult}>Clear Result</Button>
             <br /><br />
             {isDataReady &&
                 <div>

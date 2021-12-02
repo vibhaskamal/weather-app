@@ -1,11 +1,13 @@
 import React from 'react';
-import './App.css';
+import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { BrowserRouter, Link, Routes, Route } from "react-router-dom";
 import Weather from './pages/weather.js';
 import Favourites from './pages/favourites';
+import './App.css';
+
+const CAPITAL_CITIES = ['Canberra', 'Sydney', 'Darwin', 'Brisbane', 'Adelaide', 'Hobart', 'Melbourne', 'Perth'];
 
 function App() {
   return (
@@ -24,6 +26,7 @@ function App() {
         </AppBar>
         <Routes>
           <Route path="/" element={<Weather />} />
+          {/* <Route path="/:city_name" element={<Weather />} /> */}
           <Route path="/favourites" element={<Favourites />} />
         </Routes>
       </div>

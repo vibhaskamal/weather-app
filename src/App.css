@@ -6,6 +6,17 @@
   display: inline-flex;
 }
 
+.star-icon {
+  font-size: 40px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-inline: 10px;
+}
+
+.page-heading {
+  margin-top: 200px;
+}
+
 .chip-class {
   height: 50px;
   width: 200px;
